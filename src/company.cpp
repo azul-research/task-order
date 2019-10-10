@@ -1,0 +1,168 @@
+#include "company.h"
+#include <vector>
+#include <algorithm>
+#include <iostream>
+#include <set>
+#include <limits.h>
+
+Worker::Worker() {}
+
+Worker::Worker(long long start, long long finish, long long type, long long salary, long long id) {
+	w_start = start;
+	w_finish = finish;
+	w_type = type;
+	w_salary = salary;
+	w_id = id;
+}
+
+long long Worker::get_type() {
+	return w_type;
+}
+
+long long Worker::get_start() {
+	return w_start;
+}
+
+long long Worker::get_finish() {
+	return w_finish;
+}
+
+long long Worker::get_salary() {
+	return w_salary;
+}
+
+bool operator<(const Worker w_1, const Worker w_2) {
+	return w_1.w_start <= w_2.w_start;
+}
+
+std::istream& operator>> (std::istream &is, Worker &w) {
+	is >> w.w_start;
+	is >> w.w_finish;
+	is >> w.w_type;
+	is >> w.w_salary;
+	is >> w.w_id;
+	return is;
+}
+
+Task::Task() {}
+
+Task::Task(long long type, long long cost) {
+	t_type = type;
+	t_cost = cost;
+}
+
+bool operator<(const Task t_1, const Task t_2) {
+	return t_1.t_type <= t_2.t_type;
+}
+
+bool Task::operator==(const Task& other) const {
+	return t_type == other.t_type && t_cost == other.t_cost;
+}
+
+long long Task::get_cost() {
+	return t_cost;
+}
+
+long long Task::get_type() {
+	return t_type;
+}
+
+std::istream &operator>> (std::istream &is, Task &t) {
+	is >> t.t_type;
+	is >> t.t_cost;
+	return is;
+}
+
+std::ostream &operator<< (std::ostream &os, const Task &t) {
+	os << t.t_type;
+	return os;
+}
+
+Manager::Manager() {}
+
+Manager::Manager(long long start, long long id) {
+	m_start = start;
+	m_id = id;
+}
+
+long long Manager::get_id() {
+	return m_id;
+}
+
+long long Manager::get_start() {
+	return m_start;
+}
+
+bool operator<(const Manager m_1, const Manager m_2) {
+	return m_1.m_start <= m_2.m_start;
+}
+
+
+std::istream &operator>> (std::istream &is, Manager &m) {
+	is >> m.m_start;
+	is >> m.m_id;
+	return is;
+}
+
+Result::Result() {
+	r_value = LLONG_MAX;
+}
+
+void Result::calculate_result(std::vector<Task> Tasks, std::vector<Manager> Managers, std::vector<Worker> Workers) {
+	std::vector<long long> completion_time(Tasks.size());
+	do {
+		std::set<std::pair<long long, Manager>> Managers_set;
+		std::vector<std::vector<Task>> new_r_task_order(Managers.size());
+		for (auto m : Managers) {
+			Managers_set.insert({m.get_start(), m});
+		}
+		long long new_r_value = 0; 
+		for (size_t i = 0; i < Tasks.size(); i++) {
+			std::pair<long long, Manager> m = *Managers_set.begin();
+			Managers_set.erase(Managers_set.begin());
+			m.first += Tasks[i].get_cost();
+			completion_time[i] = m.first;
+			Managers_set.insert(m);
+			new_r_task_order[m.second.get_id()].push_back(Tasks[i]);
+		} 
+		for (size_t i = 0; i < Tasks.size(); i++) {
+			for (auto w : Workers) {
+				if (Tasks[i].get_type() == w.get_type()) {
+					if (completion_time[i] >= w.get_start() && completion_time[i] <= w.get_finish()) {
+						new_r_value += (completion_time[i] - w.get_start()) * w.get_salary();
+					}
+					if (completion_time[i] > w.get_finish()) {
+						new_r_value += (w.get_finish() - w.get_start()) * w.get_salary();
+					}
+				}
+			}
+		}
+		r_value = std::min(r_value, new_r_value);
+		if (r_value == new_r_value) {
+			r_task_order = new_r_task_order;
+		}
+		if (r_value == 0) {
+			break;
+		}
+	} while (std::next_permutation(Tasks.begin(), Tasks.end()));
+	std::cout << r_value << '\n';
+	for (auto v : r_task_order) {
+		for (auto i : v) {
+			std::cout << i << ' ';
+		}
+		std::cout << '\n';
+	}
+}
+/*
+3
+1 3
+2 5
+3 8
+2
+0 0
+0 1
+3
+3 5 1 15 0
+3 7 2 12 1
+3 10 3 15 3
+*/
