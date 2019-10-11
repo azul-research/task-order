@@ -4,10 +4,11 @@
 #include <iostream>
 #include <set>
 #include <limits.h>
+#include <cassert>
 
 Worker::Worker() {}
 
-Worker::Worker(long long start, long long finish, long long type, long long salary, long long id) {
+Worker::Worker(unsigned long start, unsigned long finish, unsigned long type, unsigned long salary, unsigned long id) {
 	w_start = start;
 	w_finish = finish;
 	assert(w_start < w_finish);
@@ -16,19 +17,19 @@ Worker::Worker(long long start, long long finish, long long type, long long sala
 	w_id = id;
 }
 
-long long Worker::get_type() {
+unsigned long Worker::get_type() {
 	return w_type;
 }
 
-long long Worker::get_start() {
+unsigned long Worker::get_start() {
 	return w_start;
 }
 
-long long Worker::get_finish() {
+unsigned long Worker::get_finish() {
 	return w_finish;
 }
 
-long long Worker::get_salary() {
+unsigned long Worker::get_salary() {
 	return w_salary;
 }
 
@@ -47,7 +48,7 @@ std::istream& operator>> (std::istream &is, Worker &w) {
 
 Task::Task() {}
 
-Task::Task(long long type, long long cost) {
+Task::Task(unsigned long type, unsigned long cost) {
 	t_type = type;
 	t_cost = cost;
 }
@@ -60,11 +61,11 @@ bool Task::operator==(const Task& other) const {
 	return t_type == other.t_type && t_cost == other.t_cost;
 }
 
-long long Task::get_cost() {
+unsigned long Task::get_cost() {
 	return t_cost;
 }
 
-long long Task::get_type() {
+unsigned long Task::get_type() {
 	return t_type;
 }
 
@@ -81,16 +82,16 @@ std::ostream &operator<< (std::ostream &os, const Task &t) {
 
 Manager::Manager() {}
 
-Manager::Manager(long long start, long long id) {
+Manager::Manager(unsigned long start, unsigned long id) {
 	m_start = start;
 	m_id = id;
 }
 
-long long Manager::get_id() {
+unsigned long Manager::get_id() {
 	return m_id;
 }
 
-long long Manager::get_start() {
+unsigned long Manager::get_start() {
 	return m_start;
 }
 
@@ -106,20 +107,20 @@ std::istream &operator>> (std::istream &is, Manager &m) {
 }
 
 Result::Result() {
-	r_value = LLONG_MAX;
+	r_value = ULONG_MAX;
 }
 
 void Result::calculate_result(std::vector<Task> Tasks, std::vector<Manager> Managers, std::vector<Worker> Workers) {
-	std::vector<long long> completion_time(Tasks.size());
+	std::vector<unsigned long> completion_time(Tasks.size());
 	do {
-		std::set<std::pair<long long, Manager>> Managers_set;
+		std::set<std::pair<unsigned long, Manager>> Managers_set;
 		std::vector<std::vector<Task>> new_r_task_order(Managers.size());
 		for (auto m : Managers) {
 			Managers_set.insert({m.get_start(), m});
 		}
-		long long new_r_value = 0; 
+		unsigned long new_r_value = 0; 
 		for (size_t i = 0; i < Tasks.size(); i++) {
-			std::pair<long long, Manager> m = *Managers_set.begin();
+			std::pair<unsigned long, Manager> m = *Managers_set.begin();
 			Managers_set.erase(Managers_set.begin());
 			m.first += Tasks[i].get_cost();
 			completion_time[i] = m.first;
