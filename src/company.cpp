@@ -10,6 +10,7 @@ Worker::Worker() {}
 Worker::Worker(long long start, long long finish, long long type, long long salary, long long id) {
 	w_start = start;
 	w_finish = finish;
+	assert(w_start < w_finish);
 	w_type = type;
 	w_salary = salary;
 	w_id = id;
@@ -153,16 +154,3 @@ void Result::calculate_result(std::vector<Task> Tasks, std::vector<Manager> Mana
 		std::cout << '\n';
 	}
 }
-/*
-3
-1 3
-2 5
-3 8
-2
-0 0
-0 1
-3
-3 5 1 15 0
-3 7 2 12 1
-3 10 3 15 3
-*/
