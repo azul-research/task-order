@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <set>
+#include <map>
 
 class Worker {
 public:
@@ -60,8 +61,12 @@ class Result {
 public:
 	Result();
 
-	void calculate_result(std::vector<Task> Tasks, std::vector<Manager> Manangers, std::vector<Worker> Workers);
+	void calculate_minimum(std::vector<Task> Tasks, std::vector<Manager> Managers, std::vector<Worker> Workers);
+	std::pair<unsigned long, std::map<Manager, std::vector<Task>>> calculate_result(std::vector<Task> Tasks, std::vector<Manager> Manangers, std::vector<Worker> Workers);
 private:
-	std::vector<std::vector<Task>> r_task_order;
+	std::map<Manager, std::vector<Task>> r_task_order;
 	unsigned long r_value;
 };
+
+//add function f(managers, workers, permutation) - result
+//minimum calculation is another function

@@ -5,6 +5,7 @@
 #include <set>
 #include <limits.h>
 #include <cassert>
+#include <map>
 
 Worker::Worker() {}
 
@@ -110,48 +111,47 @@ Result::Result() {
 	r_value = ULONG_MAX;
 }
 
-void Result::calculate_result(std::vector<Task> Tasks, std::vector<Manager> Managers, std::vector<Worker> Workers) {
-	std::vector<unsigned long> completion_time(Tasks.size());
+void Result::calculate_minimum(std::vector<Task> Tasks, std::vector<Manager> Managers, std::vector<Worker> Workers) {
 	do {
-		std::set<std::pair<unsigned long, Manager>> Managers_set;
-		std::vector<std::vector<Task>> new_r_task_order(Managers.size());
-		for (auto m : Managers) {
-			Managers_set.insert({m.get_start(), m});
-		}
-		unsigned long new_r_value = 0; 
-		for (size_t i = 0; i < Tasks.size(); i++) {
-			std::pair<unsigned long, Manager> m = *Managers_set.begin();
-			Managers_set.erase(Managers_set.begin());
-			m.first += Tasks[i].get_cost();
-			completion_time[i] = m.first;
-			Managers_set.insert(m);
-			new_r_task_order[m.second.get_id()].push_back(Tasks[i]);
-		} 
-		for (size_t i = 0; i < Tasks.size(); i++) {
-			for (auto w : Workers) {
-				if (Tasks[i].get_type() == w.get_type()) {
-					if (completion_time[i] >= w.get_start() && completion_time[i] <= w.get_finish()) {
-						new_r_value += (completion_time[i] - w.get_start()) * w.get_salary();
-					}
-					if (completion_time[i] > w.get_finish()) {
-						new_r_value += (w.get_finish() - w.get_start()) * w.get_salary();
-					}
-				}
-			}
-		}
-		r_value = std::min(r_value, new_r_value);
-		if (r_value == new_r_value) {
-			r_task_order = new_r_task_order;
+		std::pair<unsigned long, std::map<Manager, std::vector<Task>>> new_result = calculate_result(Tasks, Managers, Workers);
+		r_value = std::min(r_value, new_result.first);
+		if (r_value == new_result.first) {
+			r_task_order = new_result.second;
 		}
 		if (r_value == 0) {
 			break;
 		}
 	} while (std::next_permutation(Tasks.begin(), Tasks.end()));
-	std::cout << r_value << '\n';
-	for (auto v : r_task_order) {
-		for (auto i : v) {
-			std::cout << i << ' ';
-		}
-		std::cout << '\n';
+}
+
+std::pair<unsigned long, std::map<Manager, std::vector<Task>>> Result::calculate_result(std::vector<Task> Tasks, std::vector<Manager> Managers, std::vector<Worker> Workers) {
+	std::vector<unsigned long> completion_time(Tasks.size());
+	std::set<std::pair<unsigned long, Manager>> Managers_set;
+	std::map<Manager, std::vector<Task>> new_r_task_order;
+	for (auto m : Managers) {
+		Managers_set.insert({m.get_start(), m});
+		new_r_task_order[m] = {};
 	}
+	unsigned long new_r_value = 0; 
+	for (size_t i = 0; i < Tasks.size(); i++) {
+		std::pair<unsigned long, Manager> m = *Managers_set.begin();
+		Managers_set.erase(Managers_set.begin());
+		m.first += Tasks[i].get_cost();
+		completion_time[i] = m.first;
+		Managers_set.insert(m);
+		new_r_task_order[m.second].push_back({Tasks[i]});
+	} 
+	for (size_t i = 0; i < Tasks.size(); i++) {
+		for (auto w : Workers) {
+			if (Tasks[i].get_type() == w.get_type()) {
+				if (completion_time[i] >= w.get_start() && completion_time[i] <= w.get_finish()) {
+					new_r_value += (completion_time[i] - w.get_start()) * w.get_salary();
+				}
+				if (completion_time[i] > w.get_finish()) {
+					new_r_value += (w.get_finish() - w.get_start()) * w.get_salary();
+				}
+			}
+		}
+	}
+	return {new_r_value, new_r_task_order};
 }
