@@ -26,5 +26,6 @@ int main() {
 		Workers.push_back(w);
 	}
 	Result result = Result();
-	result.calculate_result(Tasks, Managers, Workers);
+	auto task_order = result.get_task_order();
+	result.calculate_minimum(Tasks, Managers, Workers);
 }

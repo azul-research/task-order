@@ -111,12 +111,25 @@ Result::Result() {
 	r_value = ULONG_MAX;
 }
 
+Result::Result(unsigned long value, std::map<Manager, std::vector<Task>> task_order) {
+	r_value = value;
+	r_task_order = task_order;
+}
+
+unsigned long Result::get_value() {
+	return r_value;
+}
+
+std::map<Manager, std::vector<Task>> Result::get_task_order() {
+	return r_task_order;
+}
+
 void Result::calculate_minimum(std::vector<Task> Tasks, std::vector<Manager> Managers, std::vector<Worker> Workers) {
 	do {
-		std::pair<unsigned long, std::map<Manager, std::vector<Task>>> new_result = calculate_result(Tasks, Managers, Workers);
-		r_value = std::min(r_value, new_result.first);
-		if (r_value == new_result.first) {
-			r_task_order = new_result.second;
+		Result new_result = calculate_result(Tasks, Managers, Workers);
+		r_value = std::min(r_value, new_result.get_value());
+		if (r_value == new_result.get_value()) {
+			r_task_order = new_result.get_task_order();
 		}
 		if (r_value == 0) {
 			break;
@@ -124,7 +137,7 @@ void Result::calculate_minimum(std::vector<Task> Tasks, std::vector<Manager> Man
 	} while (std::next_permutation(Tasks.begin(), Tasks.end()));
 }
 
-std::pair<unsigned long, std::map<Manager, std::vector<Task>>> Result::calculate_result(std::vector<Task> Tasks, std::vector<Manager> Managers, std::vector<Worker> Workers) {
+Result Result::calculate_result(std::vector<Task> Tasks, std::vector<Manager> Managers, std::vector<Worker> Workers) {
 	std::vector<unsigned long> completion_time(Tasks.size());
 	std::set<std::pair<unsigned long, Manager>> Managers_set;
 	std::map<Manager, std::vector<Task>> new_r_task_order;
@@ -153,5 +166,5 @@ std::pair<unsigned long, std::map<Manager, std::vector<Task>>> Result::calculate
 			}
 		}
 	}
-	return {new_r_value, new_r_task_order};
+	return {Result(new_r_value, new_r_task_order)};
 }

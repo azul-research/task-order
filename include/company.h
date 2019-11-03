@@ -62,8 +62,13 @@ public:
 	Result();
 
 	void calculate_minimum(std::vector<Task> Tasks, std::vector<Manager> Managers, std::vector<Worker> Workers);
-	std::pair<unsigned long, std::map<Manager, std::vector<Task>>> calculate_result(std::vector<Task> Tasks, std::vector<Manager> Manangers, std::vector<Worker> Workers);
-private:
+	Result calculate_result(std::vector<Task> Tasks, std::vector<Manager> Manangers, std::vector<Worker> Workers);
+
+	unsigned long get_value();
+	std::map<Manager, std::vector<Task>> get_task_order();
+private:	
+	Result(unsigned long value, std::map<Manager, std::vector<Task>> task_order);
+
 	std::map<Manager, std::vector<Task>> r_task_order;
 	unsigned long r_value;
 };
