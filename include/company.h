@@ -73,5 +73,5 @@ private:
 	unsigned long r_value;
 };
 
-//add function f(managers, workers, permutation) - result
-//minimum calculation is another function
+void edging(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers);
+void evr_1(std::vector<Task> &Tasks, std::vector<Manager> &Manangers, std::vector<Worker> &Workers);

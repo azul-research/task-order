@@ -3,6 +3,7 @@
 #include <vector>
 
 int main() {
+	freopen("input.txt", "r", stdin);
 	unsigned long  m_size, t_size, w_size;
 	std::vector<Task> Tasks;
 	std::vector<Manager> Managers;
@@ -28,4 +29,6 @@ int main() {
 	Result result = Result();
 	auto task_order = result.get_task_order();
 	result.calculate_minimum(Tasks, Managers, Workers);
+	evr_1(Tasks, Managers, Workers);
+	edging(Tasks, Managers, Workers);
 }
