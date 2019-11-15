@@ -1,34 +1,23 @@
-#include "company.h"
+#include "pdw_structs.hpp"
 #include <algorithm>
 #include <deque>
 
 using namespace std;
 
-typedef unsigned long ulong;
-
 class GT_algorithm {
-    struct my_task {
-        ulong d;    // first start
-        ulong p;    // task cost
-        ulong id;   // task id
-
-        my_task();
-        my_task(ulong d, ulong p, ulong id);
-    };
-
-    vector<my_task> My_Tasks;
+    vector<pdw_task> _Tasks;
+    vector<pdw_worker> _Workers;
     size_t num_of_tasks;
     size_t max_t;
-    vector<Worker> _Workers;
-    vector<Task> _Tasks;
+
+    bool sort_type;
 
     ulong sum_p(ulong start, ulong end);
-    ulong find_first_start(int i);
 
 public:
     ulong result;
     deque<ulong> task_order;
 
-    GT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks);
+    GT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks, calculate_d::type_d type = calculate_d::type_d::FS, bool sort_type = 1);  // sort_type == 1 <=> a_i.d > a_j.d, i < j
     void calculate_result();
 };
