@@ -23,6 +23,14 @@ struct pdw_worker {
     pdw_worker(ulong w, ulong type, ulong start, ulong finish);
 };
 
+enum type_d {
+    FIRST_START, FIRST_END, LAST_START, LAST_END, MIDDLE
+};
+
+enum type_sort {
+    MIN_MAX, MAX_MIN
+};
+
 class calculate_d {
     vector<pdw_worker> _Workers;
 
@@ -33,10 +41,6 @@ class calculate_d {
     ulong find_middle(size_t id);
 
 public:
-    enum type_d {
-        FS, FE, LS, LE, M
-    };
-
     calculate_d(vector<pdw_worker> &Workers);
     ulong find_d(size_t id, type_d type);
 };

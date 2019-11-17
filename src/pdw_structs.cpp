@@ -6,15 +6,15 @@ calculate_d::calculate_d(vector<pdw_worker> &Workers) : _Workers(Workers) {
 
 ulong calculate_d::find_d(size_t id, type_d type) {
     switch (type) {
-    case FS:
+    case FIRST_START:
         return find_first_start(id);
-    case FE:
+    case FIRST_END:
         return find_first_end(id);
-    case LS:
+    case LAST_START:
         return find_last_start(id);
-    case LE:
+    case LAST_END:
         return find_last_end(id);
-    case M:
+    case MIDDLE:
         return find_middle(id);
     }
 }
