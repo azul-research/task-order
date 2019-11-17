@@ -7,7 +7,7 @@ ulong GT_algorithm::sum_p(ulong start, ulong end) {
     return s;
 }
 
-GT_algorithm::GT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks, calculate_d::type_d type, bool sort_type) : sort_type(sort_type) {
+GT_algorithm::GT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks, type_d type, type_sort sort_type) : sort_type(sort_type) {
     num_of_tasks = Tasks.size();
     _Tasks.resize(num_of_tasks);
 
@@ -22,7 +22,7 @@ GT_algorithm::GT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks, calcula
 }
 
 void GT_algorithm::calculate_result() {
-    if (sort_type)
+    if (sort_type == MAX_MIN)
         sort(_Tasks.begin(), _Tasks.end(), [](pdw_task a, pdw_task b) -> bool {return a.d > b.d;});
     else
         sort(_Tasks.begin(), _Tasks.end(), [](pdw_task a, pdw_task b) -> bool {return a.d < b.d;});
