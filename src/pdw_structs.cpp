@@ -65,6 +65,7 @@ ulong calculate_d::find_middle(size_t id) {
 		}
 	m /= (double) denom;
 	return m;
+
 }
 
 pdw_task::pdw_task() {
