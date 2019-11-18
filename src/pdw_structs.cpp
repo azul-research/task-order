@@ -56,15 +56,15 @@ ulong calculate_d::find_last_end(size_t id) {
 }
 
 ulong calculate_d::find_middle(size_t id) {
-    ulong m = 0;
-    ulong denom = 0;
-    for (auto w : _Workers)
-        if (w.type == id) {
-            m += w.start * w.w;
-            denom += w.w;
+	ulong m = 0;
+	ulong denom = 0;
+	for (auto w : _Workers)
+		if (w.type == id) {
+			m += w.start * w.w;
+			denom += w.w;
 		}
 	m /= (double) denom;
-    return m;
+	return m;
 }
 
 pdw_task::pdw_task() {
