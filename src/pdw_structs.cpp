@@ -1,5 +1,9 @@
 #include "pdw_structs.hpp"
 
+ulong GT(ulong w, ulong c, ulong start, ulong end) {
+    return w * min((ulong)max(1LL * 0, 1LL * c - 1LL * start), end - start);
+}
+
 calculate_d::calculate_d(vector<pdw_worker> &Workers) : _Workers(Workers) {
 
 }
@@ -56,16 +60,15 @@ ulong calculate_d::find_last_end(size_t id) {
 }
 
 ulong calculate_d::find_middle(size_t id) {
-	ulong m = 0;
-	ulong denom = 0;
-	for (auto w : _Workers)
-		if (w.type == id) {
-			m += w.start * w.w;
-			denom += w.w;
-		}
-	m /= (double) denom;
-	return m;
-
+    ulong m = 0;
+    ulong denom = 0;
+    for (auto w : _Workers)
+        if (w.type == id) {
+            m += w.start * w.w;
+            denom += w.w;
+        }
+    m /= (double)denom;
+    return m;
 }
 
 pdw_task::pdw_task() {

@@ -1,5 +1,4 @@
 #include "pdw_structs.hpp"
-#include <algorithm>
 #include <deque>
 
 using namespace std;
