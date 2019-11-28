@@ -21,6 +21,7 @@ ulong calculate_d::find_d(size_t id, type_d type) {
     case MIDDLE:
         return find_middle(id);
     }
+    return -1;
 }
 
 ulong calculate_d::find_first_start(size_t id) {

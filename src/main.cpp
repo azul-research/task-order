@@ -1,8 +1,9 @@
 #include "company.h"
 #include <iostream>
 #include <vector>
+#include "sum_wT.h"
 
-int main() {
+int main(int argc, char **argv) {
 	unsigned long  m_size, t_size, w_size;
 	std::vector<Task> Tasks;
 	std::vector<Manager> Managers;
@@ -25,7 +26,15 @@ int main() {
 		std::cin >> w;
 		Workers.push_back(w);
 	}
-	Result result = Result();
-	auto task_order = result.get_task_order();
-	result.calculate_minimum(Tasks, Managers, Workers);
+	if (argc > 1) {
+		if (argv[1] == (char *)"naive") {
+			Result result = Result();
+			result.calculate_minimum(Tasks, Managers, Workers);
+		}
+		if (argv[1] == (char *)"sum_wT") {
+			sum_wT_algorithm wT = sum_wT_algorithm(Workers, Tasks, calculate_d::LS);
+			wT.calculate_result();
+		}
+	}
+	return 0;
 }
