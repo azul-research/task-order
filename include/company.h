@@ -73,5 +73,7 @@ private:
     unsigned long r_value;
 };
 
+
 //add function f(managers, workers, permutation) - result
 //minimum calculation is another function
+

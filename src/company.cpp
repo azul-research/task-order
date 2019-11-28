@@ -77,8 +77,9 @@ std::istream &operator>> (std::istream &is, Task &t) {
 }
 
 std::ostream &operator<< (std::ostream &os, const Task &t) {
-    os << t.t_type;
-    return os;
+	os << t.t_type;
+	os << t.t_cost;
+	return os;
 }
 
 Manager::Manager() {}
