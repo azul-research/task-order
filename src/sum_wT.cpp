@@ -7,7 +7,7 @@ ulong sum_wT_algorithm::sum_p(ulong start, ulong end) {
     return s;
 }
 
-sum_wT_algorithm::sum_wT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks, calculate_d::type_d type) : Workers(Workers) {
+sum_wT_algorithm::sum_wT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks, type_d type) : Workers(Workers) {
     num_of_tasks = Tasks.size();
     _Tasks.resize(num_of_tasks);
 

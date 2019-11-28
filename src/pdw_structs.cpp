@@ -1,7 +1,7 @@
 #include "pdw_structs.hpp"
 
 ulong GT(ulong w, ulong c, ulong start, ulong end) {
-    return w * min((ulong)max(1LL * 0, 1LL * c - 1LL * start), end - start);
+    return w * min(max(1UL * 0UL, (1UL * c - 1UL * start)), end - start);
 }
 
 calculate_d::calculate_d(vector<pdw_worker> &Workers) : _Workers(Workers) {

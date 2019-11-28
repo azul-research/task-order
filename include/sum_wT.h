@@ -19,6 +19,6 @@ public:
     ulong result;
     std::vector<Task> task_order;
 
-    sum_wT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks, calculate_d::type_d type = calculate_d::FS);
+    sum_wT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks, type_d type = type_d::FIRST_START);
     void calculate_result();
 };

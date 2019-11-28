@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
 			result.calculate_minimum(Tasks, Managers, Workers);
 		}
 		if (argv[1] == (char *)"sum_wT") {
-			sum_wT_algorithm wT = sum_wT_algorithm(Workers, Tasks, calculate_d::LS);
+			sum_wT_algorithm wT = sum_wT_algorithm(Workers, Tasks, type_d::LAST_START);
 			wT.calculate_result();
 		}
 	}
