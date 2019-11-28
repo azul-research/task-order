@@ -1,8 +1,11 @@
 #include "company.h"
+#include <algorithm>
 
 typedef unsigned long ulong;
 
 using namespace std;
+
+ulong GT(ulong w, ulong c, ulong start, ulong end);
 
 struct pdw_task {
     ulong d;

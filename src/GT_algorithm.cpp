@@ -35,7 +35,7 @@ void GT_algorithm::calculate_result() {
 
         for (auto w : _Workers)
             if (w.type == _Tasks[0].id)
-                f[0][t] += w.w * min((ulong)max(1LL * 0, t * 1LL + _Tasks[0].p - w.start), w.finish - w.start);
+                f[0][t] += GT(w.w, t + _Tasks[0].p, w.start, w.finish);
     }
 
     for (size_t j = 1; j < num_of_tasks; ++j)
@@ -50,9 +50,8 @@ void GT_algorithm::calculate_result() {
             f_2[t] = f[j - 1][t];
             for (auto w : _Workers) {
                 if (w.type == _Tasks[j].id) {
-                    f_1[t] += w.w * min((ulong)max(0 * 1LL, t * 1LL + _Tasks[j].p - w.start), w.finish - w.start);
-
-                    f_2[t] += w.w * min((ulong)max(0 * 1LL, t * 1LL + sum_p(0, j) - w.start), w.finish - w.start);
+                    f_1[t] += GT(w.w, t + _Tasks[j].p, w.start, w.finish);
+                    f_2[t] += GT(w.w, t + sum_p(0, j), w.start, w.finish);
                 }
             }
 
