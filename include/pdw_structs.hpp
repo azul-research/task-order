@@ -1,6 +1,9 @@
 #include "company.h"
 #include <algorithm>
 
+#ifndef _PDW_STRUCTS_
+#define _PDW_STRUCTS_
+
 typedef unsigned long ulong;
 
 using namespace std;
@@ -47,3 +50,5 @@ public:
     calculate_d(vector<pdw_worker> &Workers);
     ulong find_d(size_t id, type_d type);
 };
+
+#endif // _PDW_STRUCTS_

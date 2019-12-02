@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
 	if (!algo.compare("sum_wT")) {
 		sum_wT_algorithm wT = sum_wT_algorithm(Workers, Tasks, type_d::LAST_START);
 		wT.calculate_result();
-		cout << WT.result << "\n";
+		cout << wT.result << "\n";
 	}
 	if (!algo.compare("GT")) {
 		GT_algorithm GT = GT_algorithm(Workers, Tasks, type_d::LAST_START);
