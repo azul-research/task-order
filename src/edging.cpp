@@ -27,7 +27,7 @@ edging_algorithm::edging_algorithm(vector<Worker>& Workers, vector<Task>& Tasks,
 	max_t = sum_p(0, n_tasks - 1) + 1;
 }
 	
-void edging_algorithm::calculate() {
+void edging_algorithm::calculate_order() {
 	if (sort_type == MAX_MIN)
 		sort(_Tasks.begin(), _Tasks.end(), [](pdw_task a, pdw_task b) -> bool {return a.d > b.d; });
 	else
@@ -81,4 +81,20 @@ void edging_algorithm::calculate() {
 	for (size_t i = 0; i < n_tasks; ++i) {
 		this->task_order.push_back(order[n_tasks - 1][0][i]);
 	}
+}
+
+void edging_algorithm::calculate_result(vector<Task>& Tasks, vector<Manager>& Managers, vector<Worker>& Workers) {
+	vector<Task> our_tasks;
+	for (size_t i = 0; i < Tasks.size(); ++i) {
+		our_tasks.push_back(Task(this->task_order[i], Tasks[this->task_order[i]].get_cost()));
+	}
+	Result res = Result();
+	res = res.calculate_result(our_tasks, Managers, Workers);
+	res = local_search_neigh(res, our_tasks, Managers, Workers);
+	this->result = res.get_value();
+}
+
+void edging_algorithm::calculate(vector<Task>& Tasks, vector<Manager>& Managers, vector<Worker>& Workers) {
+	edging_algorithm::calculate_order();
+	edging_algorithm::calculate_result(Tasks, Managers, Workers);
 }
