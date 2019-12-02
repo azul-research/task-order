@@ -30,6 +30,7 @@ int main(int argc, char **argv) {
 		if (argv[1] == (char *)"naive") {
 			Result result = Result();
 			result.calculate_minimum(Tasks, Managers, Workers);
+			std::cout << result.get_value() << "\n";
 		}
 		if (argv[1] == (char *)"sum_wT") {
 			sum_wT_algorithm wT = sum_wT_algorithm(Workers, Tasks, type_d::LAST_START);
