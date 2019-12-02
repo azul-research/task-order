@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
 	}
 	if (!algo.compare("edging")) {
 		edging_algorithm ea = edging_algorithm(Workers, Tasks, type_d::LAST_START);
-		ea.calculate();
+		ea.calculate(Tasks, Managers, Workers);
 		cout << ea.result << "\n";
 	}
 	if (!algo.compare("evr_1")) {
