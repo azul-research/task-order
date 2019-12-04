@@ -7,7 +7,8 @@ ulong GT_algorithm::sum_p(ulong start, ulong end) {
     return s;
 }
 
-GT_algorithm::GT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks, type_d type, type_sort sort_type) : sort_type(sort_type) {
+GT_algorithm::GT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks, vector<Manager> &Managers, type_d type, type_sort sort_type) :
+    sort_type(sort_type), Workers(Workers), Tasks(Tasks), Managers(Managers) {
     num_of_tasks = Tasks.size();
     _Tasks.resize(num_of_tasks);
 
@@ -35,7 +36,7 @@ void GT_algorithm::calculate_result() {
 
         for (auto w : _Workers)
             if (w.type == _Tasks[0].id)
-                f[0][t] += w.w * min((ulong)max(1LL * 0, t * 1LL + _Tasks[0].p - w.start), w.finish - w.start);
+                f[0][t] += GT(w.w, t + _Tasks[0].p, w.start, w.finish);
     }
 
     for (size_t j = 1; j < num_of_tasks; ++j)
@@ -50,9 +51,8 @@ void GT_algorithm::calculate_result() {
             f_2[t] = f[j - 1][t];
             for (auto w : _Workers) {
                 if (w.type == _Tasks[j].id) {
-                    f_1[t] += w.w * min((ulong)max(0 * 1LL, t * 1LL + _Tasks[j].p - w.start), w.finish - w.start);
-
-                    f_2[t] += w.w * min((ulong)max(0 * 1LL, t * 1LL + sum_p(0, j) - w.start), w.finish - w.start);
+                    f_1[t] += GT(w.w, t + _Tasks[j].p, w.start, w.finish);
+                    f_2[t] += GT(w.w, t + sum_p(0, j), w.start, w.finish);
                 }
             }
 
@@ -70,4 +70,14 @@ void GT_algorithm::calculate_result() {
 
     for (auto i : pi[num_of_tasks - 1][0])
         task_order.push_back(_Tasks[i].id);
+}
+
+ulong GT_algorithm::get_result_with_managers() {
+    Result result = Result();
+
+    std::vector<Task> _Tasks(Tasks.size());
+    for (size_t i = 0; i < _Tasks.size(); i++) {
+        _Tasks[i] = Tasks[task_order[i]];
+    } 
+    return result.calculate_result(_Tasks, Managers, Workers).get_value();
 }
