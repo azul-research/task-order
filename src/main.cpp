@@ -51,9 +51,9 @@ int main(int argc, char **argv) {
 		cout << WT.result << "\n";
 	}
 	if (!algo.compare("GT")) {
-		GT_algorithm GT = GT_algorithm(Workers, Tasks, type_d::LAST_START);
+		GT_algorithm GT = GT_algorithm(Workers, Tasks, Managers, type_d::LAST_END);
 		GT.calculate_result();
-		cout << GT.result << "\n";
+		cout << GT.get_result_with_managers() << "\n";
 	}
 	if (!algo.compare("edging")) {
 		edging_algorithm ea = edging_algorithm(Workers, Tasks, type_d::LAST_START);
