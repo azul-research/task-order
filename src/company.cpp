@@ -6,6 +6,8 @@
 #include <limits.h>
 #include <cassert>
 #include <map>
+#include "big_integer.h"
+#include <thread>
 
 Worker::Worker() {}
 
@@ -110,6 +112,7 @@ std::istream &operator>> (std::istream &is, Manager &m) {
 
 Result::Result() {
     r_value = ULONG_MAX;
+    status = big_integer(0);
 }
 
 Result::Result(unsigned long value, std::map<Manager, std::vector<Task>> &task_order) {
@@ -125,6 +128,15 @@ std::map<Manager, std::vector<Task>> Result::get_task_order() {
     return r_task_order;
 }
 
+std::vector<big_integer> Result::count_factorials(int n) {
+	std::vector<big_integer> factorials;
+	factorials.push_back(big_integer(1));
+	for (int i = 1; i <= n; i++) {
+		factorials.push_back(factorials[i - 1] * big_integer(i));
+	}
+	return factorials;
+}
+
 void Result::calculate_minimum(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers) {
     do {
         Result new_result = calculate_result(Tasks, Managers, Workers);
@@ -132,10 +144,34 @@ void Result::calculate_minimum(std::vector<Task> &Tasks, std::vector<Manager> &M
         if (r_value == new_result.get_value()) {
             r_task_order = new_result.get_task_order();
         }
+        status++;
         if (r_value == 0) {
             break;
         }
     } while (std::next_permutation(Tasks.begin(), Tasks.end()));
+}
+
+void Result::calculate_minimum_parallel(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers) {
+	big_integer number_of_threads = big_integer(128);
+	std::vector<big_integer> factorials = count_factorials(Tasks.size());
+	for (big_integer i = big_integer(0); i < number_of_threads; i += 1) {
+		std::thread th([factorials, number_of_threads, Tasks, Managers, Workers, this] () mutable {
+			big_integer a = (factorials[Tasks.size()] / number_of_threads);
+			for (big_integer j = big_integer(0); j < a; j += 1) {
+				Result new_result = calculate_result(Tasks, Managers, Workers);
+        		r_value = std::min(r_value, new_result.get_value());
+        		if (r_value == new_result.get_value()) {
+            		r_task_order = new_result.get_task_order();
+        		}	
+        		std::next_permutation(Tasks.begin(), Tasks.end());
+        		status += 1;
+        		if (status % big_integer(1000000) == big_integer(0)) {
+        			std::cerr << status << "/" << factorials[Tasks.size()] << '\n'; 
+        		}
+        	}
+		});
+		th.join();
+	}
 }
 
 Result Result::calculate_result(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers) {

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <set>
 #include <map>
+#include "big_integer.h"
 
 class Worker {
 public:
@@ -62,7 +63,11 @@ public:
     Result();
 
     void calculate_minimum(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers);
+    void calculate_minimum_parallel(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers);
     Result calculate_result(std::vector<Task> &Tasks, std::vector<Manager> &Manangers, std::vector<Worker> &Workers);
+
+
+    std::vector<big_integer> count_factorials(int n);
 
     unsigned long get_value();
     std::map<Manager, std::vector<Task>> get_task_order();
@@ -71,6 +76,7 @@ private:
 
     std::map<Manager, std::vector<Task>> r_task_order;
     unsigned long r_value;
+    big_integer status;
 };
 
 
