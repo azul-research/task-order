@@ -7,6 +7,7 @@
 #include "evr_1.h"
 #include "edging.h"
 #include "GT_algorithm.hpp"
+
 #include "sum_wT.h"
 
 int main(int argc, char **argv) {
@@ -53,7 +54,7 @@ int main(int argc, char **argv) {
 	if (!algo.compare("GT")) {
 		GT_algorithm GT = GT_algorithm(Workers, Tasks, Managers, type_d::LAST_END);
 		GT.calculate_result();
-		cout << GT.get_result_with_managers() << "\n";
+		cout << GT.get_result_with_managers() << "\n";	
 	}
 	if (!algo.compare("edging")) {
 		edging_algorithm ea = edging_algorithm(Workers, Tasks, type_d::LAST_START);
