@@ -49,21 +49,33 @@ int main(int argc, char **argv) {
 	if (!algo.compare("sum_wT")) {
 		sum_wT_algorithm wT = sum_wT_algorithm(Workers, Tasks, type_d::LAST_START);
 		wT.calculate_result();
+        for (size_t i = 0; i < wT.task_order.size(); ++i)
+            cout << wT.task_order[i] << " ";
+        cout << "\n";
 		cout << wT.result << "\n";
 	}
 	if (!algo.compare("GT")) {
 		GT_algorithm GT = GT_algorithm(Workers, Tasks, type_d::LAST_START);
 		GT.calculate_result();
+        for (auto num : GT.task_order)
+            cout << num << " ";
+        cout << "\n";
 		cout << GT.result << "\n";
 	}
 	if (!algo.compare("edging")) {
 		edging_algorithm ea = edging_algorithm(Workers, Tasks, type_d::LAST_START);
 		ea.calculate(Tasks, Managers, Workers);
+        for (size_t i = 0; i < ea.task_order.size(); ++i)
+            cout << ea.task_order[i] << " ";
+        cout << "\n";
 		cout << ea.result << "\n";
 	}
 	if (!algo.compare("evr_1")) {
 		evr_1 e1 = evr_1();
 		e1.calculate_result(Tasks, Managers, Workers);
+        for (size_t i = 0; i < e1.task_order.size(); ++i)
+            cout << e1.task_order[i] << " ";
+        cout << "\n";
 		cout << e1.result << "\n";
 	}
 	return 0;
