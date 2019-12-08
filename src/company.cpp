@@ -137,6 +137,36 @@ std::vector<big_integer> Result::count_factorials(int n) {
 	return factorials;
 }
 
+void Result::find_perm_by_value(big_integer value, std::vector<Task> &Tasks, std::vector<big_integer> &factorials) {
+	std::vector<bool> used;
+	for (size_t i = 0; i < Tasks.size(); i++) {
+		task_order[i] = i + 1;
+		used.push_back(false);
+	}
+	for (size_t i = 0; i < Tasks.size(); i++) {
+		task_order[i] = (value / factorials[Tasks.size() - i]).to_integer() + 1;
+		bool flag = false;
+		for (size_t j = 0; j < i; j++) {
+			if (task_order[j] == task_order[i]) {
+				flag = true;
+			}
+		}
+		if (flag) {
+			for (size_t j = 0; j < used.size(); j++) {
+				if (!used[j]) {
+					task_order[i] = j + 1;
+				}
+			}
+		}
+		value %= factorials[Tasks.size() - i];
+	}
+	int j = 0;
+	for (auto i : task_order) {
+		std::swap(Tasks[i - 1], Tasks[j]);
+		j++;
+	}
+}
+
 void Result::calculate_minimum(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers) {
     do {
         Result new_result = calculate_result(Tasks, Managers, Workers);
@@ -152,18 +182,36 @@ void Result::calculate_minimum(std::vector<Task> &Tasks, std::vector<Manager> &M
 }
 
 void Result::calculate_minimum_parallel(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers) {
+	for (size_t i = 0; i < Tasks.size(); i++) {
+		task_order.push_back(i + 1);
+	}
 	big_integer number_of_threads = big_integer(128);
 	std::vector<big_integer> factorials = count_factorials(Tasks.size());
+	if (factorials[Tasks.size()] < big_integer(128)) {
+		calculate_minimum(Tasks, Managers, Workers);
+		return;
+	}
+	big_integer perm_number = 1;
+	big_integer a = (factorials[Tasks.size()] / number_of_threads);
+	if (factorials[Tasks.size()] % number_of_threads != 0) {
+		a++;
+	}
 	for (big_integer i = big_integer(0); i < number_of_threads; i += 1) {
-		std::thread th([factorials, number_of_threads, Tasks, Managers, Workers, this] () mutable {
-			big_integer a = (factorials[Tasks.size()] / number_of_threads);
+		find_perm_by_value(perm_number, Tasks, factorials);
+		std::thread th([factorials, number_of_threads, Tasks, Managers, Workers, this, perm_number, a] () mutable {
 			for (big_integer j = big_integer(0); j < a; j += 1) {
+				/*for (size_t i = 0; i < task_order.size(); i++) {
+					std::cerr << task_order[i] << " ";
+				}
+				std::cerr << '\n';*/
 				Result new_result = calculate_result(Tasks, Managers, Workers);
         		r_value = std::min(r_value, new_result.get_value());
         		if (r_value == new_result.get_value()) {
             		r_task_order = new_result.get_task_order();
         		}	
         		std::next_permutation(Tasks.begin(), Tasks.end());
+        		std::next_permutation(task_order.begin(), task_order.end());
+        		perm_number += 1;
         		status += 1;
         		if (status % big_integer(1000000) == big_integer(0)) {
         			std::cerr << status << "/" << factorials[Tasks.size()] << '\n'; 
@@ -171,7 +219,9 @@ void Result::calculate_minimum_parallel(std::vector<Task> &Tasks, std::vector<Ma
         	}
 		});
 		th.join();
+		perm_number += a;
 	}
+	std::cerr << status;	
 }
 
 Result Result::calculate_result(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers) {
