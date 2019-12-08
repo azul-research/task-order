@@ -33,7 +33,7 @@ void sum_wT_algorithm::calculate_result() {
         pi[0][t].push_back(1);
         for (auto w : _Workers) {
             if (w.type == _Tasks[0].id) {
-                f[0][t] += w.w * min(w.finish - w.start, t + _Tasks[0].p - _Tasks[0].d);
+                f[0][t] += w.w * min((w.finish - w.start) * 1ULL, t + _Tasks[0].p - _Tasks[0].d);
             }
         }
     }

@@ -1,8 +1,8 @@
-#include <vector>
-#include <big_integer.h>
+#include "big_integer.h"
 #include <string>
 #include <iomanip>
 #include <iostream>
+#include <algorithm>
 
 big_integer::big_integer() : big_integer(0){}
 
