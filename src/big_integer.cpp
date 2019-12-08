@@ -88,32 +88,34 @@ bool big_integer::operator>(const big_integer& other) const {
 	return !(*this <= other);
 }
 
-const big_integer big_integer::operator+(const big_integer& other) {
+const big_integer big_integer::operator+(const big_integer& other) const{
 	int carry = 0;
-    for (size_t i = 0; i < std::max(_digits.size(), other._digits.size()) || carry != 0; ++i) {
-        if (i == _digits.size()) {
-        	_digits.push_back(0);
+	big_integer result = *this;
+    for (size_t i = 0; i < std::max(result._digits.size(), other._digits.size()) || carry != 0; ++i) {
+        if (i == result._digits.size()) {
+        	result._digits.push_back(0);
         }
-        _digits[i] += carry + (i < other._digits.size() ? other._digits[i] : 0);
-        carry = _digits[i] >= big_integer::BASE;
+        result._digits[i] += carry + (i < other._digits.size() ? other._digits[i] : 0);
+        carry = result._digits[i] >= big_integer::BASE;
         if (carry != 0) {
-         	_digits[i] -= big_integer::BASE;
+         	result._digits[i] -= big_integer::BASE;
         }
     }
-    return *this;
+    return result;
 }
 
-const big_integer big_integer::operator-(const big_integer& other) {
+const big_integer big_integer::operator-(const big_integer& other) const {
 	int carry = 0;
+	big_integer result = *this;
     for (size_t i = 0; i < other._digits.size() || carry != 0; ++i) {
-        _digits[i] -= carry + (i < other._digits.size() ? other._digits[i] : 0);
-        carry = _digits[i] < 0;
+        result._digits[i] -= carry + (i < other._digits.size() ? other._digits[i] : 0);
+        carry = result._digits[i] < 0;
         if (carry != 0) {
-        	_digits[i] += big_integer::BASE;
+        	result._digits[i] += big_integer::BASE;
         }
     }
-    remove_leading_zeros();
-    return *this;
+    result.remove_leading_zeros();
+    return result;
 }
 
 const big_integer big_integer::operator*(const big_integer& other) const {
@@ -212,6 +214,10 @@ big_integer& big_integer::operator-=(const big_integer& value) {
 	return *this = (*this - value);
 }
 
+big_integer& big_integer::operator%=(const big_integer& value) {
+	return *this = (*this % value);
+}
+
 const big_integer big_integer::operator++() {
 	return (*this += 1);
 }
@@ -243,4 +249,13 @@ std::ostream& operator <<(std::ostream& os, const big_integer& bi) {
 	    os.fill(old_fill);
     }
     return os;
+}
+
+int big_integer::to_integer() const {
+	int result = 0, pw = 1;
+	for (long long i = 0; i < static_cast<long long>(_digits.size()); i++) {
+		result += _digits[i] * pw;
+		pw *= big_integer::BASE;
+	}
+	return result;
 }

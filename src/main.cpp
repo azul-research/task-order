@@ -43,7 +43,10 @@ int main(int argc, char **argv) {
 	std::string algo = argv[3];
 	if (!algo.compare("naive")) {
 		Result result = Result();
-		result.calculate_minimum(Tasks, Managers, Workers);
+		result.calculate_minimum_parallel(Tasks, Managers, Workers);
+		for (size_t i = 0; i < result.task_order.size(); ++i)
+            cout << result.task_order[i] << " ";
+        cout << "\n";
 		cout << result.get_value() << "\n";
 	}
 	if (!algo.compare("sum_wT")) {

@@ -17,17 +17,19 @@ public:
 	bool operator>=(const big_integer& other) const;
 	bool operator>(const big_integer& other) const;
 
-	const big_integer operator+(const big_integer& other);
-	const big_integer operator-(const big_integer& other);
+	const big_integer operator+(const big_integer& other) const;
+	const big_integer operator-(const big_integer& other) const;
 	const big_integer operator*(const big_integer& other) const;
 	const big_integer operator%(const big_integer& other);
 	const big_integer operator/(const big_integer& other) const;
 	void shift_other();
+	int to_integer() const;
 
 	big_integer& operator+=(const big_integer& value);
 	big_integer& operator*=(const big_integer& value);
 	big_integer& operator/=(const big_integer& value);
 	big_integer& operator-=(const big_integer& value);
+	big_integer& operator%=(const big_integer& value);
 	const big_integer operator++();
 	const big_integer operator--();
 	const big_integer operator++(int);

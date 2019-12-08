@@ -66,11 +66,12 @@ public:
     void calculate_minimum_parallel(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers);
     Result calculate_result(std::vector<Task> &Tasks, std::vector<Manager> &Manangers, std::vector<Worker> &Workers);
 
-
+    void find_perm_by_value(big_integer value, std::vector<Task> &Tasks, std::vector<big_integer> &factorials);
     std::vector<big_integer> count_factorials(int n);
 
     unsigned long get_value();
     std::map<Manager, std::vector<Task>> get_task_order();
+    std::vector<int> task_order;
 private:
     Result(unsigned long value, std::map<Manager, std::vector<Task>> &task_order);
 
