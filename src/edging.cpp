@@ -90,7 +90,6 @@ void edging_algorithm::calculate_result(vector<Task>& Tasks, vector<Manager>& Ma
 	}
 	Result res = Result();
 	res = res.calculate_result(our_tasks, Managers, Workers);
-	res = local_search_neigh(res, our_tasks, Managers, Workers);
 	this->result = res.get_value();
 }
 

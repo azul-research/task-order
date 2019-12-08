@@ -18,7 +18,7 @@ class GT_algorithm {
 
 public:
     ulong result;
-    deque<ulong> task_order;
+    vector<ulong> task_order;
 
     GT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks, vector<Manager> &Managers, type_d type = FIRST_START, type_sort sort_type = MAX_MIN);
     void calculate_result();

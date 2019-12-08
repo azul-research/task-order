@@ -1,7 +1,6 @@
 #pragma once
 #include "company.h"
 #include "pdw_structs.hpp"
-#include <deque>
 
 
 struct Stat {
@@ -16,7 +15,7 @@ class evr_1 {
 	
 public:
 	ulong result;
-	deque<ulong> task_order;
+	std::vector<ulong> task_order;
 
 	evr_1();
 	void calculate_result(std::vector<Task>& Tasks, std::vector<Manager>& Managers, std::vector<Worker>& Workers);

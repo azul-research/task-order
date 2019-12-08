@@ -3,5 +3,13 @@
 #include "company.h"
 
 
-Result local_search_neigh(Result& res, std::vector<Task>& our_tasks,
+class local_search_neigh {
+
+public:
+	unsigned long result;
+	std::vector<unsigned long> task_order;
+
+	local_search_neigh(std::vector<unsigned long>& order, std::vector<Task>& Tasks, 
 		std::vector<Manager>& Managers, std::vector<Worker>& Workers);
+
+};

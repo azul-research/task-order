@@ -27,7 +27,6 @@ void evr_1::calculate_result(std::vector<Task>& Tasks, std::vector<Manager>& Man
 	}
 	Result res;
 	res = res.calculate_result(our_tasks, Managers, Workers);
-	res = local_search_neigh(res, our_tasks, Managers, Workers);
 	this->result = res.get_value();
 	for (size_t i = 0; i < Tasks.size(); ++i) {
 		this->task_order.push_back(our_tasks[i].get_type());
