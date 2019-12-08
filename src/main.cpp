@@ -159,7 +159,7 @@ int main(int argc, char **argv) {
 			else {
 				if (verbose) {
 					for (size_t i = 0; i < wT.task_order.size(); ++i)
-						cout << wT.task_order[i] << " ";
+						cout << wT.task_order[i].get_type() << " ";
 					cout << "\n";
 				}
 				cout << wT.result << "\n";
