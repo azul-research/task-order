@@ -8,7 +8,7 @@ ulong GT_algorithm::sum_p(ulong start, ulong end) {
 }
 
 GT_algorithm::GT_algorithm(vector<Worker> &Workers, vector<Task> &Tasks, vector<Manager> &Managers, type_d type, type_sort sort_type) :
-    sort_type(sort_type), Workers(Workers), Tasks(Tasks), Managers(Managers) {
+    Workers(Workers), Tasks(Tasks), Managers(Managers), sort_type(sort_type) {
     num_of_tasks = Tasks.size();
     _Tasks.resize(num_of_tasks);
 

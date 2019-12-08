@@ -4,9 +4,9 @@
 using namespace std;
 
 class GT_algorithm {
-    vector<Task> Tasks;
+    vector<Worker>  Workers;
+    vector<Task>    Tasks;
     vector<Manager> Managers;
-    vector<Worker> Workers;
     vector<pdw_task> _Tasks;
     vector<pdw_worker> _Workers;
     size_t num_of_tasks;
