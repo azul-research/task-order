@@ -138,7 +138,7 @@ int main(int argc, char **argv) {
 		}
 		if (naive) {
 			Result result = Result();
-			result.calculate_minimum(Tasks, Managers, Workers);
+			result.calculate_minimum_parallel(Tasks, Managers, Workers);
 			if (verbose) {
 				for (size_t i = 0; i < result.task_order.size(); ++i)
 					cout << result.task_order[i] << " ";
