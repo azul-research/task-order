@@ -63,7 +63,7 @@ public:
     Result();
 
     void calculate_minimum(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers);
-    void calculate_minimum_parallel(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers);
+    void calculate_minimum_parallel(std::vector<Task> &Tasks, std::vector<Manager> &Managers, std::vector<Worker> &Workers, int thread_number);
     Result calculate_result(std::vector<Task> &Tasks, std::vector<Manager> &Manangers, std::vector<Worker> &Workers);
 
     void find_perm_by_value(big_integer value, std::vector<Task> &Tasks, std::vector<big_integer> &factorials);
