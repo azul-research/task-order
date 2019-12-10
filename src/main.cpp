@@ -23,78 +23,79 @@ void print_lsn(vector<ulong> &task_order, bool& verbose, vector<Task>& Tasks, ve
 int main(int argc, char **argv) {
 	if (argc == 1) {
 		std::cout << "*.exe input [algorithm] [type_d] [type_sort] [local_search] [-v | --verbose]\n";
-		std::cout << "algorithm: all | all-n | naive | sum_wT | GT | edging | evr_1\ntype_d: ls | le | fs | fe | M\n";
-		std::cout << "type_sort: max_min | min_max\n";
-		std::cout << "local_search: -lsn | off\n";
+		std::cout << "algorithm: all | all-n | naive | sum_wT | GT | edging | evr_1\n";
+		std::cout << "type_d (for sum_wT, GT, edging): ls | le | fs | fe | M\n";
+		std::cout << "type_sort(for GT, edging): max_min | min_max\n";
+		std::cout << "local_search: -lsn\n";
 		std::cout << "Example: Azul.exe input all-n ls max_min -lsn -v\n";
 		return 0;
 	}
-	std::string algo = argv[2];
+	std::string input_args;
+	for (int i = 2; i < argc; ++i) {
+		input_args.append(argv[i]);
+	}
 	bool naive = 0;
 	bool sum_wT = 0;
 	bool GT = 0;
 	bool edging = 0;
 	bool e_1 = 0;
-	if (!algo.compare("all")) {
+	if ((input_args.find("all") != string::npos) && (input_args.find("all-n") == string::npos)) {
 		naive = 1;
 		sum_wT = 1;
 		GT = 1;
 		edging = 1;
 		e_1 = 1;
 	}
-	if (!algo.compare("all-n")) {
+	if (input_args.find("all-n") != string::npos) {
 		sum_wT = 1;
 		GT = 1;
 		edging = 1;
 		e_1 = 1;
 	}
-	if (!algo.compare("naive")) {
+	if (input_args.find("naive") != string::npos) {
 		naive = 1;
 	}
-	if (!algo.compare("sum_wT")) {
+	if (input_args.find("sum_wT") != string::npos) {
 		sum_wT = 1;
 	}
-	if (!algo.compare("GT")) {
+	if (input_args.find("GT") != string::npos) {
 		GT = 1;
 	}
-	if (!algo.compare("edging")) {
+	if (input_args.find("edging") != string::npos) {
 		edging = 1;
 	}
-	if (!algo.compare("evr_1")) {
+	if (input_args.find("evr_1") != string::npos) {
 		e_1 = 1;
 	}
-	std::string d = argv[3];
 	type_d d_type;
-	if (!d.compare("ls")) {
+	if (input_args.find("ls") != string::npos) {
 		d_type = LAST_START;
 	}
-	if (!d.compare("le")) {
+	if (input_args.find("le") != string::npos) {
 		d_type = LAST_END;
 	}
-	if (!d.compare("fs")) {
+	if (input_args.find("fs") != string::npos) {
 		d_type = FIRST_START;
 	}
-	if (!d.compare("fe")) {
+	if (input_args.find("fe") != string::npos) {
 		d_type = FIRST_END;
 	}
-	if (!d.compare("m")) {
+	if (input_args.find("m") != string::npos) {
 		d_type = MIDDLE;
 	}
-	std::string s = argv[4];
 	type_sort sort_type;
-	if (!d.compare("min_max")) {
+	if (input_args.find("min_max") != string::npos) {
 		sort_type = MIN_MAX;
 	}
-	if (!d.compare("max_min")) {
+	if (input_args.find("max_min") != string::npos) {
 		sort_type = MAX_MIN;
 	}
-	std::string ls = argv[5];
 	bool lsn = 0;
-	if (!ls.compare("-lsn")) {
+	if (input_args.find("-lsn") != string::npos) {
 		lsn = 1;
 	}
 	bool verbose = 0;
-	if (argc == 7) {
+	if ((input_args.find("-v") != string::npos) || (input_args.find("--verbose") != string::npos)) {
 		verbose = 1;
 	}
 	std::ifstream file(argv[1]);
